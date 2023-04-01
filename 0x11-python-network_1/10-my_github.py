@@ -1,15 +1,19 @@
 #!/usr/bin/python3
+"""a Python script that takes your GitHub credentials (username and password)
+and uses the GitHub API to display your id (you must your PAT instead
+as your password)
 """
-Use requests package to make a get request to the github api.
-First argument is username, second argument is password.
-"""
-import sys
 import requests
+from requests.auth import HTTPBasicAuth
+from sys import argv
 
 if __name__ == "__main__":
-    url = "https://api.github.com/user"
-    r = requests.get(url, auth=(sys.argv[1], sys.argv[2])).json()
-    try:
-        print(r['id'])
-    except:
-        print("None")
+    basic_credential = HTTPBasicAuth(argv[1], argv[2])
+    req = requests.get(
+        'https://api.github.com/user', auth=basic_credential
+    )
+    print(req.json().get('id'))
+    # you can also use
+    # req = requests.get(
+    #    'https://api.github.com/users/', auth=(argv[1], argv[2])
+    # )
